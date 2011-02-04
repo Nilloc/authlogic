@@ -182,7 +182,7 @@ module Authlogic
           klass.define_callbacks *METHODS
           
           # If Rails 3, support the new callback syntax
-          if klass.send(klass.respond_to?(:singleton_class) ? :singleton_class : :metaclass).method_defined?(:set_callback)
+          if klass.singleton_class.method_defined?(:set_callback)
             METHODS.each do |method|
               klass.class_eval <<-"end_eval", __FILE__, __LINE__
                 def self.#{method}(*methods, &block)
@@ -277,7 +277,7 @@ module Authlogic
           # Resets the password to a random friendly token and then saves the record.
           def reset_password!
             reset_password
-            save_without_session_maintenance(ActiveRecord::VERSION::MAJOR >= 3 ? {:validate => false} : false)
+            save_without_session_maintenance(:validate => false)
           end
           alias_method :randomize_password!, :reset_password!
         
@@ -314,7 +314,7 @@ module Authlogic
             
             def transition_password(attempted_password)
               self.password = attempted_password
-              save(ActiveRecord::VERSION::MAJOR >= 3 ? {:validate => false} : false)
+              save(:validate => false)
             end
           
             def require_password?
