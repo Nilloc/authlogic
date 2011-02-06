@@ -91,11 +91,7 @@ module Authlogic
           # Same as reset_perishable_token, but then saves the record afterwards.
           def reset_perishable_token!
             reset_perishable_token
-<<<<<<< HEAD
-            save_without_session_maintenance(ActiveRecord::VERSION::MAJOR >= 3 ? {:validate => false} : false)
-=======
             save_without_session_maintenance(:validate => false)
->>>>>>> a087ad0cba3c165ba22fcf176c28b6f7517931e8
           end
           
           # A convenience method based on the disable_perishable_token_maintenance configuration option.
